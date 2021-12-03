@@ -92,7 +92,8 @@ mun_check <- function(porte, A, B, C) {
 
 ## Filtrando lista de clusters ----
 
-criterios <- list(lista_clusters$porte, lista_clusters$cluster_A, lista_clusters$cluster_B,
+criterios <- list(lista_clusters$porte, lista_clusters$cluster_A, 
+                  lista_clusters$cluster_B,
                   lista_clusters$cluster_C)
 
 lista_clusters$cod_ref <- pmap_dbl(criterios, mun_check)
@@ -181,7 +182,8 @@ metas_calculadas <- metas_calculadas %>%
 
 ## Adicionando prioridades ----
 metas_calculadas <- metas_calculadas %>% 
-  left_join(lista_clusters, by = c("porte", "cluster_A", "cluster_B", "cluster_C")) %>% 
+  left_join(lista_clusters, by = c("porte", "cluster_A", "cluster_B", 
+                                   "cluster_C")) %>% 
   select(-A, -B, -C)
 
 ## Verificando metas resultantes (apenas negativas) ----
@@ -233,7 +235,8 @@ municipios_metas <- bind_rows(metas_neg, metas_pos_cor)
 outlier <- read_csv2("input/outliers.csv")
 
 outlier <- outlier %>% 
-  select(codigo, sigla_uf, nome, regiao, porte, media_mortes, municipalizacao) %>% 
+  select(codigo, sigla_uf, nome, regiao, porte, media_mortes, 
+         municipalizacao) %>% 
   left_join(frota_total, by = "codigo") %>% 
   left_join(populacao, by = "codigo")
 
@@ -276,7 +279,8 @@ metas_porte <- municipios_metas %>%
   ggplot(aes(x = var_perc, fill=porte)) +
   geom_histogram(binwidth = 0.1, color = "#F1F1F1") +
   scale_fill_brewer(palette = "Set2") +
-  scale_x_continuous(breaks = seq(-1, 0, 0.1), minor_breaks = NULL, labels = seq(-100, 0, 10)) +
+  scale_x_continuous(breaks = seq(-1, 0, 0.1), minor_breaks = NULL, 
+                     labels = seq(-100, 0, 10)) +
   scale_y_continuous(minor_breaks = NULL) +
   facet_wrap(~porte, labeller = labeller(porte = c(
     "Maior porte" = "Maior porte (n = 324)",
@@ -331,3 +335,7 @@ ggsave(filename = "output/metas_uf.png", plot = metas_uf, width = 4.7,
        height = 3,
        device = "png", dpi = 300)
 
+
+# Exportando os dados -----------------------------------------------------
+
+write_csv(x = municipios_metas, "output/municipios_metas.csv")
