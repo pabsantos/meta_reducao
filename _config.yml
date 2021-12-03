@@ -1,1 +1,2 @@
-theme: jekyll-theme-cayman
+name: "flexdashboard"
+output_dir: docs
