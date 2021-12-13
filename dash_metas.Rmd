@@ -20,25 +20,28 @@ library(plotly)
 metas <- read_csv("output/municipios_metas.csv")
 
 metas1 <- metas %>% 
-  select(codigo, sigla_uf, nome, regiao, porte, media_mortes, var_perc) %>% 
+  select(codigo, sigla_uf, nome, regiao, porte, media_mortes, var_perc, municipalizacao) %>% 
   rename(meta_porcentagem = var_perc) %>% 
-  mutate(meta_porcentagem = scales::percent(meta_porcentagem, accuracy = 1),
+  mutate(meta_porcentagem = round(meta_porcentagem * 100, 2),
          codigo = as.character(codigo),
          media_mortes = round(media_mortes, digits = 1))
 ```
 
 
-Column {data-width=500}
+Column {data-width=600}
 -----------------------------------------------------------------------
 
 ### Tabela Completa
 
 ```{r table}
-datatable(metas1, filter = "top", rownames = FALSE, height = NULL, 
-          options = list(searchHighlight = TRUE, scrollY = 700, bPaginate = FALSE))
+
+colunas <- c("Código" = "codigo", "UF" = "sigla_uf", "Nome" = "nome", "Região" = "regiao", "Porte" = "porte", "Média de mortes" = "media_mortes", "Meta (%)" = "meta_porcentagem", "Municipalizado?" = "municipalizacao")
+
+datatable(metas1, rownames = FALSE, colnames = colunas, filter = "top", 
+          options = list(scrollY = 700, bPaginate = FALSE))
 ```
 
-Column {data-width=500}
+Column {data-width=400}
 -----------------------------------------------------------------------
 
 ### Distribuição das metas de redução por porte de município
@@ -77,7 +80,7 @@ p2 <- metas %>%
   ggplot(aes(x = sigla_uf, y = -1 * var_perc)) +
   geom_col(fill = "Grey40") +
   geom_text(aes(label = round((var_perc)*100, digits = 0)), color = "white",
-            nudge_y = -0.01, size = 2.5) +
+            nudge_y = -0.02, size = 2.5) +
   coord_flip() +
   theme_minimal() +
   scale_y_continuous(minor_breaks = NULL, 
