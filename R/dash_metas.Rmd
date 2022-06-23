@@ -25,6 +25,13 @@ metas1 <- metas %>%
   mutate(meta_porcentagem = round(meta_porcentagem * 100, 2),
          codigo = as.character(codigo),
          media_mortes = round(media_mortes, digits = 1))
+
+metas1 %>% 
+  group_by(porte, municipalizacao) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = "municipalizacao", values_from = "n") %>% 
+  mutate(Municipalizado = Municipalizado / (Municipalizado + `Não municipalizado`) * 100,
+         `Não municipalizado` = 100 - Municipalizado)
 ```
 
 

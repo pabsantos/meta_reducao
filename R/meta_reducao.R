@@ -150,7 +150,9 @@ select_mortes_ref <- function(porte, A, B, C) {
 }
 
 # Extraindo refrerencias (mortes, pop, frota) ----
-criterios <- list(lista_clusters$porte, lista_clusters$cluster_A, lista_clusters$cluster_B,
+criterios <- list(lista_clusters$porte, 
+                  lista_clusters$cluster_A, 
+                  lista_clusters$cluster_B,
                   lista_clusters$cluster_C)
 
 refs <- reduce(pmap(criterios, select_mortes_ref), bind_rows)
@@ -209,7 +211,7 @@ summary(metas_neg)
 min <- min(metas_neg$var_perc)
 max <- max(metas_neg$var_perc)
 
-var_perc_prioridade <- seq(min, max, ((max-min)/26))
+var_perc_prioridade <- seq(min, max, ((max - min)/26))
 prioridades_lista <- seq(1,27,1)
 
 metas_prioridade <- tibble(
@@ -276,7 +278,7 @@ var_perc_br <- var_br / mortes_br
 ## Distribuicao das metas ----
 
 metas_porte <- municipios_metas %>% 
-  ggplot(aes(x = var_perc, fill=porte)) +
+  ggplot(aes(x = var_perc, fil = porte)) +
   geom_histogram(binwidth = 0.1, color = "#F1F1F1") +
   scale_fill_brewer(palette = "Set2") +
   scale_x_continuous(breaks = seq(-1, 0, 0.1), minor_breaks = NULL, 
@@ -320,7 +322,7 @@ metas_uf <- municipios_metas %>%
   theme_minimal() +
   theme(axis.text = element_text(size = 6),
         axis.title = element_text(size = 8)) +
-  geom_hline(yintercept = -1 *var_perc_br, 
+  geom_hline(yintercept = -1 * var_perc_br, 
              linetype = "dashed", color = "red") +
   scale_y_continuous(minor_breaks = NULL, 
                      breaks = seq(0,1,0.1), 
