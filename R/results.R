@@ -70,3 +70,10 @@ plot_metas_uf <- function(municipios) {
     ) +
     theme(plot.background = element_rect(color = NULL, fill = "white"))
 }
+
+calc_perc <- function(municipios, variavel) {
+  municipios %>% 
+    group_by({{ variavel }}) %>% 
+    summarise(var = sum(var), mortes = sum(media_mortes)) %>% 
+    mutate(var_perc = var / mortes)
+}

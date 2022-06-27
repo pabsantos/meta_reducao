@@ -116,4 +116,6 @@ map2(
   ~ggsave(.x, .y, device = "png", width = 6, height = 3.5)
 )
 
-
+calc_perc(municipios_metas, porte)
+calc_perc(municipios_metas, regiao)
+calc_perc(municipios_metas, snt)
