@@ -43,3 +43,22 @@ calc_media_frota <- function(frota) {
     mutate(media_frota = (ano_2018 + ano_2019 + ano_2020) / 3) %>% 
     select(ibge_cod, media_frota)
 }
+
+calc_metas_uf <- function(municipios) {
+  municipios %>% 
+    group_by(uf) %>% 
+    summarise(mortes = sum(media_mortes), var = sum(var)) %>% 
+    mutate(var_perc = var / mortes) %>% 
+    ungroup() %>% 
+    select(uf, var_perc)
+}
+
+add_metas_outlier <- function(metas_uf, outliers) {
+  outliers %>% 
+    left_join(metas_uf, by = "uf") %>% 
+    mutate(
+      var = var_perc * media_mortes,
+      meta = media_mortes + var,
+      meta_round = round(meta)
+    )
+}
