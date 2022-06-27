@@ -1,9 +1,11 @@
 library(tidyverse)
+library(glue)
 
 options(scipen = 999)
 
 source("R/arrange.R")
 source("R/calc.R")
+source('R/results.R')
 
 # Dados de entrada --------------------------------------------------------
 
@@ -99,4 +101,19 @@ municipios_metas <- bind_rows(
 )
 
 # Resultados --------------------------------------------------------------
+
+mortes_br <- sum(municipios_metas$media_mortes)
+meta_br <- sum(municipios_metas$meta_round)
+var_br <- meta_br - mortes_br
+var_perc_br <- var_br / mortes_br
+
+metas_porte <- plot_metas_porte(municipios_metas)
+metas_uf <- plot_metas_uf(municipios_metas)
+
+map2(
+  c("plot/metas_porte.png", "plot/metas_uf.png"),
+  list(metas_porte, metas_uf),
+  ~ggsave(.x, .y, device = "png", width = 6, height = 3.5)
+)
+
 
