@@ -68,7 +68,7 @@ plot_metas_uf <- function(municipios) {
       y = "Meta de redução (%)",
       x = "Estado"
     ) +
-    theme(plot.background = element_rect(color = NULL, fill = "white"))
+    theme(plot.background = element_rect(color = "white", fill = "white"))
 }
 
 calc_perc <- function(municipios, variavel) {

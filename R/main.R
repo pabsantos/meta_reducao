@@ -119,3 +119,7 @@ map2(
 calc_perc(municipios_metas, porte)
 calc_perc(municipios_metas, regiao)
 calc_perc(municipios_metas, snt)
+
+# Exportar resultados -----------------------------------------------------
+
+write_csv(municipios_metas, "output/municipios_metas.csv")
